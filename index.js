@@ -11,24 +11,21 @@ const io = socketIo(server);
 
 const rootDirectory = path.join(__dirname, `${process.env.ROOT_PATH}`);
 
-// Запуск сервера на порту 
 server.listen(process.env.PORT, () => {
   console.log(`Server started on port ${process.env.PORT}`);
 });
 
-// Обработка соединения нового клиента
 io.on('connection', (socket) => {
-  console.log('New client connected');
+  socket.on("join", () => {
 
-  // Пример отправки данных каждую секунду
-  const interval = setInterval(() => {
-    const data = 'Hello from server!'; // Данные, которые будут отправлены клиенту
-    socket.emit('data-update', data); // Отправка данных клиенту по событию 'data-update'
-  }, 1000);
+    const interval = setInterval(() => {
+      socket.emit('message', { data: 'Hello from server!' });
+    }, 1000);
 
-  // Обработка отключения клиента
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-    clearInterval(interval); // Остановка отправки данных при отключении клиента
-  });
+    socket.on('disconnect', () => {
+      console.log('Client disconnected');
+      clearInterval(interval);
+    });
+
+  })
 });
