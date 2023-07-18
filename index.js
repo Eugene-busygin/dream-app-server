@@ -16,16 +16,18 @@ server.listen(process.env.PORT, () => {
 });
 
 io.on('connection', (socket) => {
-  socket.on("join", () => {
+  console.log('Client connection');
+  socket.emit('message', { data: 'Hello from server!' });
+  // socket.on("join", () => {
 
-    const interval = setInterval(() => {
-      socket.emit('message', { data: 'Hello from server!' });
-    }, 1000);
+  //   const interval = setInterval(() => {
+  //     socket.emit('message', { data: 'Hello from server!' });
+  //   }, 1000);
 
-    socket.on('disconnect', () => {
-      console.log('Client disconnected');
-      clearInterval(interval);
-    });
+  //   socket.on('disconnect', () => {
+  //     console.log('Client disconnected');
+  //     clearInterval(interval);
+  //   });
 
-  })
+  // })
 });
